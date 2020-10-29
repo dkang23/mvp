@@ -10,14 +10,19 @@ const Login = () => {
         type='text'
         name='GID'
         onChange={(e) => setLoginId(e.target.value)}
-      >
-        Golfer ID:
-      </input>
-      <input type='text' name='PIN' onChange={(e) => setPin(e.target.value)}>
-        PIN:
-      </input>
+      ></input>
+      <input
+        type='text'
+        name='PIN'
+        onChange={(e) => setPin(e.target.value)}
+      ></input>
     </form>
   );
 };
 
 export default Login;
+
+//saturday time
+//0 19 * * 6
+
+//25 18 * * 2 node ./index.js

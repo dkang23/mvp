@@ -3,7 +3,7 @@ const path = require('path');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const config = {
-  entry: ['react-hot-loader/patch', './src/index.js'],
+  entry: ['react-hot-loader/patch', './src/index.jsx'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -17,7 +17,7 @@ const config = {
       },
       {
         test: /\.css$/,
-        use: ['css-loader'],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
@@ -28,7 +28,6 @@ const config = {
     },
   },
   devServer: {
-    inline: false,
     contentBase: './dist',
   },
   plugins: [new LodashModuleReplacementPlugin()],

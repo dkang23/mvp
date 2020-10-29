@@ -1,6 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-import Login from './components/login';
+import Login from './components/login.jsx';
 class App extends React.Component {
   render() {
     const { name } = this.props;

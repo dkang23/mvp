@@ -1,11 +1,11 @@
 const puppeteer = require('puppeteer');
 const moment = require('moment');
 
-var counter = 0;
 (async () => {
   var keepGoing = true;
   while (keepGoing && moment().minute() < 60) {
     //args: ['--no-sandbox']
+    //headless: false
     console.log(keepGoing, moment().minute());
 
     const browser = await puppeteer.launch({ headless: false });
@@ -27,25 +27,25 @@ var counter = 0;
       .catch((err) => console.err);
 
     await page.waitFor(500);
-    await page
-      .$eval('input[name=QTRSFacilityID1]', (check) => (check.checked = true))
-      .catch((err) => console.err);
+    // await page
+    //   .$eval('input[name=QTRSFacilityID1]', (check) => (check.checked = true))
+    //   .catch((err) => console.err);
     await page
       .$eval('input[name=QTRSFacilityID3]', (check) => (check.checked = true))
       .catch((err) => console.err);
-    await page
-      .$eval('input[name=QTRSFacilityID4]', (check) => (check.checked = true))
-      .catch((err) => console.err);
-    await page
-      .$eval('input[name=QTRSFacilityID7]', (check) => (check.checked = true))
-      .catch((err) => console.err);
+    // await page
+    //   .$eval('input[name=QTRSFacilityID4]', (check) => (check.checked = true))
+    //   .catch((err) => console.err);
+    // await page
+    //   .$eval('input[name=QTRSFacilityID7]', (check) => (check.checked = true))
+    //   .catch((err) => console.err);
     // await page
     //   .$eval('input[name=QTRSFacilityID6]', (check) => (check.checked = true))
     //   .catch((err) => console.err);
     await page.waitFor(500);
     await page
       .$$eval('.selectable', (listEle) => {
-        listEle[listEle.length - 2].click();
+        listEle[listEle.length - 1].click();
       })
       .catch((err) => console.err);
     await page
@@ -54,18 +54,11 @@ var counter = 0;
     // searching btn
     await page.waitFor(500);
     await page.$eval('input[name=btnSubmit]', (button) => button.click());
-    await page.waitFor(500);
-    let time;
+    await page.waitFor(1000);
     await page
       .$$eval('.buttonEnable', (listEle) => {
         //loop through list ele and find substrings of times
         //saturday 10-11 bergen preferred
-        for (let i = 0; i < listEle.length; i++) {
-          if (listEle[i].attributes.onclick.nodeValue.includes('2:')) {
-            listEle[i].click();
-            return 2;
-          }
-        }
         for (let i = 0; i < listEle.length; i++) {
           if (listEle[i].attributes.onclick.nodeValue.includes('3:')) {
             listEle[i].click();
@@ -73,12 +66,18 @@ var counter = 0;
           }
         }
         for (let i = 0; i < listEle.length; i++) {
-          if (listEle[i].attributes.onclick.nodeValue.includes('4:')) {
+          if (listEle[i].attributes.onclick.nodeValue.includes('11:')) {
             listEle[i].click();
-            return 4;
+            return 11;
           }
         }
-        return 0;
+        for (let i = 0; i < listEle.length; i++) {
+          if (listEle[i].attributes.onclick.nodeValue.includes('9:')) {
+            listEle[i].click();
+            return 9;
+          }
+        }
+        throw 'no times!';
       })
       .then((data) => page.screenshot({ path: `${data}.png` }))
       .then(() => {
@@ -88,7 +87,7 @@ var counter = 0;
 
     //confirm btn
     // await page.$eval('input[name=btnSubmit]', (button) => button.click());
-    // await browser.waitForTarget(() => false);
+    //await browser.waitForTarget(() => false);
     await browser.close();
   }
 })();
